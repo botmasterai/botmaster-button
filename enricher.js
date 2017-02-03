@@ -32,14 +32,14 @@ const ButtonEnricher = () => ({
 
 /**
  * A botmaster incoming ware factory function that sets up button enricher
- * @param {Object} [options]
+ * @param {Object} [options] options for the produced middleware
  * @param {String} [options.sessionPath] dot denoted path to session in update defaults to "session"
- * @param {Object} [options.actions] other actions to also evaluate
+ * @param {Object} [options.enrichers] other enrichers to also evaluate
  * @returns {Function} botmaster incoming ware that evaluates buttons
  */
-const ButtonIncomingWare = ({sessionPath = 'session', enrichers = {}} = {}) => EnrichIncomingWare({
-    enrichers: R.merge(enrichers, {button: ButtonEnricher()}),
-    sessionPath
+const ButtonIncomingWare = (options) => EnrichIncomingWare({
+    enrichers: R.merge(options.enrichers || {}, {button: ButtonEnricher()}),
+    sessionPath: options.sessionPath  || 'session'
 });
 
 module.exports = {

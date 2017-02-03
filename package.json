@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha --recursive ./tests",
-    "docs": "documentation-readme -s \"API Usage\""
+    "docs": "documentation-readme -s \"Botmaster Ware\""
   },
   "repository": {
     "type": "git",
@@ -32,7 +32,10 @@
     "botmaster-enrich": "^0.0.4"
   },
   "devDependencies": {
+    "botmaster": "git+https://github.com/botmasterai/botmaster.git",
     "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
+    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git#next",
+    "botmaster-enrich": "git+https://github.com/botmasterai/botmaster-enrich.git",
     "documentation-readme": "^2.1.1"
   }
 }
