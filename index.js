@@ -6,6 +6,7 @@ const utils = require('./utils');
 /**
  * For the truly lazy aka yours truly, a function that sets up button middleware and handler
  * @param  {Object} botmaster an instantiated botmaster object
+ * @param {Object} options
  * @param  {Function} options.mainHandler the main on update handler for botmaster
  * @param  {Object} options.actions actions that can be invoked through buttons
  * @param  {String} options.sessionPath dot denoted path of where to get session/context in updates

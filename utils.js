@@ -21,8 +21,9 @@ const buttonPayloadLens = R.lensProp('buttonPayloads');
 // add a button payload to the session
 const updateWithButtonPayload = (update, sessionPath, payload) => {
     // append the button payload to button payloads list
-    const thisButtonPayloadLens = R.compose(R.lensPath(sessionPath.split('.')), buttonPayloadLens);
-    update[sessionPath] = R.over(thisButtonPayloadLens, R.compose(R.append(payload), R.defaultTo([])), update);
+    sessionPath = sessionPath.split('.');
+    const thisButtonPayloadLens = R.compose(R.lensPath(sessionPath.splice(1)), buttonPayloadLens);
+    update[sessionPath[0]] = R.over(thisButtonPayloadLens, R.compose(R.append(payload), R.defaultTo([])), update[sessionPath[0]]);
 };
 
 // lens for quick replies in update/message
@@ -39,11 +40,12 @@ const updateWithQuickReply = (update, {title, payload, image}) => {
 };
 
 // utility to match array of buttons against a text string using fuzzy search
-const matchingButtons = (text, buttons) => R.filter(R.propSatistfies('title', fuzzy(text)), buttons);
+const matchingButtons = (text, buttons) => R.filter(R.propSatisfies(title => fuzzy(text, title), 'title'), buttons);
 // where to store the basic button context in session
 const buttonLens = R.lensProp('button');
 
 module.exports = {
+    buttonPayloadLens,
     buttonArrayToXml,
     buttonLens,
     updateWithButtonPayload,
