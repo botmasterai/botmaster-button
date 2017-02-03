@@ -49,7 +49,7 @@ TODO
 
 ## Introduction
 
-This package demonstrates the sandwich pattern for botmaster.
+This package demonstrates the sandwich pattern for botmaster where incoming messages are preprocessed before sending to the main NLU handler and outgoing messages are processed after the main NLU.
 
 It provides:
 
@@ -132,7 +132,7 @@ For the truly lazy aka yours truly, a function that sets up button middleware an
 **Parameters**
 
 -   `botmaster` **Object** an instantiated botmaster object
--   `options` **Object** 
+-   `options` **Object**
     -   `options.mainHandler` **Function** the main on update handler for botmaster
     -   `options.actions` **Object** actions that can be invoked through buttons
     -   `options.sessionPath` **String** dot denoted path of where to get session/context in updates
@@ -144,7 +144,7 @@ Button fulfill action factory function
 
 **Parameters**
 
--   `options` **OBject** 
+-   `options` **OBject**
     -   `options.sessionPath` **String** dot denoated path to prop where context is stored
     -   `options.actions` **Object** actions that can be processed
 
@@ -162,14 +162,10 @@ A botmaster update handler that passes through to main handler if there is no ma
 
 **Parameters**
 
--   `options` **Object** 
+-   `options` **Object** the options for generated middleware
     -   `options.mainHandler` **Function** the main handler to pass through to if there is no button matched
     -   `options.sessionPath` **String** dot denoted patch to session object where the button is stored
-    -   `options.confirmText` **String** the text to use to confirm when there multuple matches
--   `$0`  
-    -   `$0.mainHandler`  
-    -   `$0.sessionPath`  
-    -   `$0.confirmText`  
+    -   `options.confirmText` **String** the text to use to confirm when there multiple matches
 
 Returns **Function** a botmaster update handler
 
@@ -191,7 +187,7 @@ Botmaster Button outgoing ware factory function
 
 **Parameters**
 
--   `options` **[Object]** 
+-   `options` **[Object]**
     -   `options.sessionPath` **[String]** dot denoated path to prop where context is stored
     -   `options.actions` **[Object]** actions that can be processed
 
