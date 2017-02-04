@@ -1,6 +1,12 @@
+[![Build Status](https://travis-ci.org/botmasterai/botmaster-button.svg?branch=master)](https://travis-ci.org/botmasterai/botmaster-button)
+
 # Botmaster Button
 
+Battle-tested middleware for botmaster <http://botmasterai.com/>).
+
 Easy cross-platform quick-reply buttons, even on those where only plain text is supported.
+
+Find the documentation at the main botmaster website: <http://botmasterai.com/middlewares/fulfill/>
 
 ## Quick start
 
@@ -132,7 +138,7 @@ For the truly lazy aka yours truly, a function that sets up button middleware an
 **Parameters**
 
 -   `botmaster` **Object** an instantiated botmaster object
--   `options` **Object**
+-   `options` **Object** 
     -   `options.mainHandler` **Function** the main on update handler for botmaster
     -   `options.actions` **Object** actions that can be invoked through buttons
     -   `options.sessionPath` **String** dot denoted path of where to get session/context in updates
@@ -144,7 +150,7 @@ Button fulfill action factory function
 
 **Parameters**
 
--   `options` **OBject**
+-   `options` **OBject** 
     -   `options.sessionPath` **String** dot denoated path to prop where context is stored
     -   `options.actions` **Object** actions that can be processed
 
@@ -187,7 +193,7 @@ Botmaster Button outgoing ware factory function
 
 **Parameters**
 
--   `options` **[Object]**
+-   `options` **[Object]** 
     -   `options.sessionPath` **[String]** dot denoated path to prop where context is stored
     -   `options.actions` **[Object]** actions that can be processed
 
