@@ -4,7 +4,9 @@
   "description": "Botmaster fulfill/enrich middleware for buttons",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive ./tests",
+      "test": "istanbul cover _mocha -- --recursive tests",
+      "tests": "mocha --recursive tests",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
     "docs": "documentation-readme -s \"Botmaster Ware\""
   },
   "repository": {
@@ -37,8 +39,11 @@
     "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git#next",
     "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
     "botmaster-test": "0.0.2",
+    "coveralls": "^2.11.15",
     "documentation-readme": "^2.1.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
+    "mocha-lcov-reporter": "^1.2.0",
     "should": "^11.1.2"
   }
 }
