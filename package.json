@@ -32,12 +32,13 @@
     "botmaster-enrich": "^0.0.4"
   },
   "devDependencies": {
-    "mocha": "^3.2.0",
-    "should": "^11.1.2",
     "botmaster": "git+https://github.com/botmasterai/botmaster.git",
-    "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
-    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git#next",
     "botmaster-enrich": "git+https://github.com/botmasterai/botmaster-enrich.git",
-    "documentation-readme": "^2.1.1"
+    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git#next",
+    "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
+    "botmaster-test": "0.0.2",
+    "documentation-readme": "^2.1.1",
+    "mocha": "^3.2.0",
+    "should": "^11.1.2"
   }
 }
