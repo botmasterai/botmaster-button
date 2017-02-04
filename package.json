@@ -1,11 +1,11 @@
 {
   "name": "botmaster-button",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Botmaster fulfill/enrich middleware for buttons",
   "main": "index.js",
   "scripts": {
-      "test": "istanbul cover _mocha -- --recursive tests",
-      "tests": "mocha --recursive tests",
+    "test": "istanbul cover _mocha -- --recursive tests",
+    "tests": "mocha --recursive tests",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
     "docs": "documentation-readme -s \"Botmaster Ware\""
   },
