@@ -23,15 +23,15 @@ describe('botmaster-button', () => {
         actions,
         sessionPath: 'session',
         confirmText: 'I am sorry I got multiple matches, can you please confirm.',
-        mainHandler: (bot, update) => {
-            const newUpdate = R.clone(update);
-            newUpdate.message.text = `
-                Hello.
-                <button image='https://images/ring.png'>I am in a relationship</button>
-                <button>I am not in a relationship</button>
-                <button title='3. Its Complicated'><itsComplicated /></button>`.replace(/\s+/g, ' ');
-            bot.sendMessage(newUpdate);
-        }
+    };
+    const mainHandler = (bot, update) => {
+        const newUpdate = R.clone(update);
+        newUpdate.message.text = `
+            Hello.
+            <button image='https://images/ring.png'>I am in a relationship</button>
+            <button>I am not in a relationship</button>
+            <button title='3. Its Complicated'><itsComplicated /></button>`.replace(/\s+/g, ' ');
+        bot.sendMessage(newUpdate);
     };
 
     beforeEach(function() {
@@ -45,6 +45,7 @@ describe('botmaster-button', () => {
     it('it should show text buttons', function(done) {
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
         myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
         myTelegramMock
@@ -64,6 +65,7 @@ describe('botmaster-button', () => {
 
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
         myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
         myTelegramMock
@@ -93,6 +95,7 @@ describe('botmaster-button', () => {
 
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
         myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error.stack}`)));
         myTelegramMock

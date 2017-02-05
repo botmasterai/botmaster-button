@@ -29,14 +29,14 @@
     "ramda": "^0.23.0"
   },
   "peerDependencies": {
-    "botmaster": "^2.0.0",
-    "botmaster-fulfill": "^2.0.3",
-    "botmaster-enrich": "^0.0.4"
+    "botmaster": ">=2.2.7",
+    "botmaster-fulfill": ">=2.0.7",
+    "botmaster-enrich": ">=0.0.4"
   },
   "devDependencies": {
     "botmaster": "git+https://github.com/botmasterai/botmaster.git",
     "botmaster-enrich": "git+https://github.com/botmasterai/botmaster-enrich.git",
-    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git#next",
+    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git",
     "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
     "botmaster-test": "0.0.2",
     "coveralls": "^2.11.15",

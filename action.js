@@ -15,7 +15,7 @@ const ButtonAction = options => ({
     controller: ({bot, update, attributes, content, index, before}) => {
         // the title is what is shown in the button
         let title;
-        if (bot.implements && bot.implements.button) {
+        if (bot.implements.quickReply) {
             title = attributes.title || content;
         } else {
             title = attributes.title || `${index + 1}. ${content}`;
@@ -34,7 +34,7 @@ const ButtonAction = options => ({
         }
 
         // use either the messenger format or a text format
-        if (bot.implements && bot.implements.button) {
+        if (bot.implements.quickReply) {
             updateWithQuickReply(update, {
                 title,
                 payload: content,

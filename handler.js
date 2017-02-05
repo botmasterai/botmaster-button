@@ -11,28 +11,27 @@ const debug = require('debug')('botmaster:button:handler');
  *  @returns {Function} a botmaster update handler
  */
 const ButtonHandler = (options) => {
-    const {mainHandler, sessionPath, confirmText} = options;
-    return (bot, update) => {
+    const {sessionPath, confirmText} = options;
+    return (bot, update, next) => {
         const thisButtonLens = R.compose(R.lensPath(sessionPath.split('.')), buttonLens);
         const buttonResult = R.view(thisButtonLens, update);
-        const newUpdate = R.clone(update);
         if (buttonResult.multiple) {
-            newUpdate.message.text = `${confirmText}${buttonArrayToXml(buttonResult.matches)}`;
+            update.message.text = `${confirmText}${buttonArrayToXml(buttonResult.matches)}`;
             debug('asking for confirmation');
-            bot.sendMessage(newUpdate);
+            bot.sendMessage(update);
         } else if (buttonResult) {
-            newUpdate.message.text = buttonResult.payload;
+            update.message.text = buttonResult.payload;
             if (buttonResult.isAction) {
                 debug('button contains action - straight to middleware');
-                bot.sendMessage(newUpdate);
+                bot.sendMessage(update);
             }
             else {
                 debug('button found - sending payload to main handler');
-                mainHandler(bot, newUpdate);
+                next();
             }
         } else {
             debug('no button - calling handler');
-            mainHandler(bot, update);
+            next();
         }
     };
 };
