@@ -1,6 +1,6 @@
 {
   "name": "botmaster-button",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Botmaster fulfill/enrich middleware for buttons",
   "main": "index.js",
   "scripts": {
