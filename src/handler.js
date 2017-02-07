@@ -4,7 +4,7 @@ const debug = require('debug')('botmaster:button:handler');
 
 const updateToMessage = (update, message = {}) => {
     const merged = R.merge(update, message);
-    merged.recipipent = update.sender;
+    merged.recipient = update.sender;
     merged.sender = update.recipient;
     return merged;
 };
