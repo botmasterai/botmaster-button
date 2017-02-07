@@ -6,12 +6,12 @@ const debug = require('debug')('botmaster:button:handler');
  *  A botmaster update handler that passes through to main handler if there is no match at all or the match is not an action. If there are multiple possible matches to the button then it asks for confirmation.
  *  @param {Object} options the options for generated middleware
  *  @param {Function} options.mainHandler the main handler to pass through to if there is no button matched
- *  @param {String} options.sessionPath dot denoted patch to session object where the button is stored
+ *  @param {String} options.sessionPath dot denoted patch to session object where the 'button' property that stores button context is located. Defaults to 'session'.
  *  @param {String} options.confirmText the text to use to confirm when there multiple matches
  *  @returns {Function} a botmaster update handler
  */
 const ButtonHandler = (options) => {
-    const {sessionPath, confirmText} = options;
+    const {sessionPath = 'session', confirmText = 'I am sorry I got multiple matches, can you please confirm.'} = options;
     return (bot, update, next) => {
         const thisButtonLens = R.compose(R.lensPath(sessionPath.split('.')), buttonLens);
         const buttonResult = R.view(thisButtonLens, update);

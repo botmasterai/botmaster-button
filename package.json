@@ -2,12 +2,15 @@
   "name": "botmaster-button",
   "version": "0.0.3",
   "description": "Botmaster fulfill/enrich middleware for buttons",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "istanbul cover _mocha -- --recursive tests",
-    "tests": "mocha --recursive tests",
+    "pretest": "npm run build",
+    "test": "istanbul cover _mocha -- --recursive dist/tests",
+    "tests": "mocha --recursive src/tests",
+    "build": "mkdir -p dist && babel --presets=es2015,babili src --out-dir dist",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
-    "docs": "documentation-readme -s \"Botmaster Ware\""
+    "docs": "documentation readme src/index.js --section=\"Botmaster Ware\"",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -26,19 +29,24 @@
   "homepage": "https://github.com/botmasterai/botmaster-button#readme",
   "dependencies": {
     "fuzzysearch": "^1.0.3",
+    "debug": "^2.6.0",
     "ramda": "^0.23.0"
   },
   "peerDependencies": {
     "botmaster": ">=2.2.7",
-    "botmaster-fulfill": ">=2.0.7",
-    "botmaster-enrich": ">=0.0.4"
+    "botmaster-fulfill": ">=2.1.3",
+    "botmaster-enrich": ">=1.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.22.2",
+    "babel-preset-babili": "0.0.10",
+    "babel-preset-es2015": "^6.22.0",
+    "documentation": "^4.0.0-beta.18",
     "botmaster": "git+https://github.com/botmasterai/botmaster.git",
-    "botmaster-enrich": "git+https://github.com/botmasterai/botmaster-enrich.git",
-    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git",
-    "botmaster-session-ware": "git+https://github.com/botmasterai/botmaster-session-ware.git",
-    "botmaster-test": "0.0.2",
+    "botmaster-enrich": "1.0.1",
+    "botmaster-fulfill": "2.1.3",
+    "botmaster-session-ware": "0.1.0",
+    "botmaster-test": "0.0.4",
     "coveralls": "^2.11.15",
     "documentation-readme": "^2.1.1",
     "istanbul": "^0.4.5",

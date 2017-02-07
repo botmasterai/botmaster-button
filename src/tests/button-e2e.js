@@ -34,6 +34,12 @@ describe('botmaster-button', () => {
         bot.sendMessage(newUpdate);
     };
 
+    const shortHandler = (bot, update) => {
+        const newUpdate = R.clone(update);
+        newUpdate.message.text = 'Hello. <buttons>I am in a relationship, I am not in a relationship, Its Complicated,,</buttons>';
+        bot.sendMessage(newUpdate);
+    };
+
     beforeEach(function() {
         return botmaster().then(botmaster => {
             myTelegramMock = telegramMock(botmaster);
@@ -46,6 +52,25 @@ describe('botmaster-button', () => {
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
+        myTelegramMock
+            .expect([
+                'Hello.',
+                '1. I am in a relationship',
+                '2. I am not in a relationship',
+                '3. Its Complicated'
+            ], done)
+            .sendUpdate('hi bob', err => {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+
+    });
+
+    it('it should show text buttons when using the shorthand <buttons>', function(done) {
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', shortHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
         myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
         myTelegramMock

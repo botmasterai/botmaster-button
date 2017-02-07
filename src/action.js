@@ -1,6 +1,21 @@
 const R = require('ramda');
 const {isPendingActions, FulfillOutgoingWare} = require('botmaster-fulfill');
-const {updateWithButtonPayload, updateWithQuickReply } = require('./utils');
+const {updateWithButtonPayload, updateWithQuickReply, buttonArrayToXml } = require('./utils');
+
+/**
+ * Action spec for buttons
+ * ```html
+ * <buttons>Option 1, Option 2</buttons>
+ * ```
+ * @constant
+ * @param {null}
+ */
+const buttons = {
+    controller: ({content}) => {
+        const array = content.split(',').map(payload => ({payload: payload.trim(' ')}));
+        return buttonArrayToXml(array);
+    }
+};
 
 /**
  * Button fulfill action factory function
@@ -59,15 +74,19 @@ const ButtonAction = options => ({
 /**
  * Botmaster Button outgoing ware factory function
  * @param {Object} [options]
- * @param  {String} [options.sessionPath] dot denoated path to prop where context is stored
+ * @param  {String} [options.sessionPath] dot denoted path to prop where context is stored
  * @param {Object} [options.actions] actions that can be processed
  * @return {Function} botmaster middleware for button
  */
 const ButtonOutgoingWare = options => FulfillOutgoingWare({
-    actions: R.merge(options.actions, {button: ButtonAction(options)})
+    actions: R.merge(options.actions, {
+        button: ButtonAction(options),
+        buttons
+    })
 });
 
 module.exports = {
     ButtonAction,
-    ButtonOutgoingWare
+    ButtonOutgoingWare,
+    buttons
 };

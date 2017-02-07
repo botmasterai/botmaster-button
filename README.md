@@ -139,11 +139,10 @@ For the truly lazy aka yours truly, a function that sets up button middleware an
 **Parameters**
 
 -   `botmaster` **Object** an instantiated botmaster object
--   `options` **Object**
-    -   `options.mainHandler` **Function** the main on update handler for botmaster
-    -   `options.actions` **Object** actions that can be invoked through buttons
-    -   `options.sessionPath` **String** dot denoted path of where to get session/context in updates
-    -   `options.confirmText` **String** what to say when we get multiple matches for a button
+-   `options` **[Object]** 
+    -   `options.actions` **[Object]** actions that can be invoked through buttons
+    -   `options.sessionPath` **[String]** dot denoted path of where to get session/context in updates
+    -   `options.confirmText` **[String]** what to say when we get multiple matches for a button
 
 #### ButtonAction
 
@@ -151,7 +150,7 @@ Button fulfill action factory function
 
 **Parameters**
 
--   `options` **OBject**
+-   `options` **OBject** 
     -   `options.sessionPath` **String** dot denoated path to prop where context is stored
     -   `options.actions` **Object** actions that can be processed
 
@@ -171,7 +170,7 @@ A botmaster update handler that passes through to main handler if there is no ma
 
 -   `options` **Object** the options for generated middleware
     -   `options.mainHandler` **Function** the main handler to pass through to if there is no button matched
-    -   `options.sessionPath` **String** dot denoted patch to session object where the button is stored
+    -   `options.sessionPath` **String** dot denoted patch to session object where the 'button' property that stores button context is located. Defaults to 'session'.
     -   `options.confirmText` **String** the text to use to confirm when there multiple matches
 
 Returns **Function** a botmaster update handler
@@ -194,8 +193,21 @@ Botmaster Button outgoing ware factory function
 
 **Parameters**
 
--   `options` **[Object]**
-    -   `options.sessionPath` **[String]** dot denoated path to prop where context is stored
+-   `options` **[Object]** 
+    -   `options.sessionPath` **[String]** dot denoted path to prop where context is stored
     -   `options.actions` **[Object]** actions that can be processed
 
 Returns **Function** botmaster middleware for button
+
+#### buttons
+
+Action spec for buttons
+
+```html
+<buttons>Option 1, Option 2</buttons>
+```
+
+**Parameters**
+
+-   `$0`  
+    -   `$0.content`  
