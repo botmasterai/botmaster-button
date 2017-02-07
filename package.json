@@ -28,8 +28,9 @@
   },
   "homepage": "https://github.com/botmasterai/botmaster-button#readme",
   "dependencies": {
-    "fuzzysearch": "^1.0.3",
     "debug": "^2.6.0",
+    "fuzzysearch": "^1.0.3",
+    "posthtml-render": "^1.0.6",
     "ramda": "^0.23.0"
   },
   "peerDependencies": {
