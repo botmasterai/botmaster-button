@@ -40,7 +40,7 @@ const updateWithQuickReply = (update, {title, payload, image}) => {
 };
 
 // utility to match array of buttons against a text string using fuzzy search
-const matchingButtons = (text, buttons) => R.filter(R.propSatisfies(title => fuzzy(text, title), 'title'), buttons);
+const matchingButtons = (text, buttons) => R.filter(R.propSatisfies(title => fuzzy(text.toLowerCase(), title.toLowerCase()), 'title'), buttons);
 // where to store the basic button context in session
 const buttonLens = R.lensProp('button');
 
