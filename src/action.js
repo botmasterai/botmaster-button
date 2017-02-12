@@ -49,8 +49,9 @@ const ButtonAction = options => ({
         }
 
         // use either the messenger format or a text format
+        let newUpdate;
         if (bot.implements.quickReply) {
-            updateWithQuickReply(update, {
+            newUpdate = updateWithQuickReply(update, {
                 title,
                 payload: content,
                 image: attributes.image
@@ -61,10 +62,10 @@ const ButtonAction = options => ({
                 beforeUpdate.message.text = before;
                 bot.sendMessage(beforeUpdate);
             }
-            const newUpdate = R.clone(update);
+            newUpdate = R.clone(update);
             newUpdate.message.text = title;
-            bot.sendMessage(newUpdate);
         }
+        bot.sendMessage(newUpdate);
 
         // remove the tag from the remaining text
         return '';

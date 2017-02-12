@@ -49,7 +49,7 @@
     "botmaster-session-ware": "0.1.0",
     "botmaster-test": "0.0.4",
     "coveralls": "^2.11.15",
-    "documentation-readme": "^2.1.1",
+    "documentation": "^4.0.0-beta.18",
     "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "mocha-lcov-reporter": "^1.2.0",
