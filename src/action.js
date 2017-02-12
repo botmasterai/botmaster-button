@@ -49,9 +49,9 @@ const ButtonAction = options => ({
         }
 
         // use either the messenger format or a text format
-        let newUpdate;
+        let newUpdate = R.clone(update);
         if (bot.implements.quickReply) {
-            newUpdate = updateWithQuickReply(update, {
+            updateWithQuickReply(newUpdate, {
                 title,
                 payload: content,
                 image: attributes.image
@@ -62,7 +62,6 @@ const ButtonAction = options => ({
                 beforeUpdate.message.text = before;
                 bot.sendMessage(beforeUpdate);
             }
-            newUpdate = R.clone(update);
             newUpdate.message.text = title;
         }
         bot.sendMessage(newUpdate);
