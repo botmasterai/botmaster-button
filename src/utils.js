@@ -27,7 +27,7 @@ const updateWithButtonPayload = (update, sessionPath, payload) => {
 };
 
 // lens for quick replies in update/message
-const quickReplyLens = R.lensPath(['message', 'quick_replies']);
+const quickReplyLens = R.lensProp('quick_replies');
 // takes an update object and updates it with a messenger format quick reply with options
 const updateWithQuickReply = (update, {title, payload, image}) => {
 
@@ -37,7 +37,7 @@ const updateWithQuickReply = (update, {title, payload, image}) => {
         payload,
         'image_url': image
     };
-    update.message = R.over(quickReplyLens, R.compose(R.append(quickReply), R.defaultTo([])), update);
+    update.message = R.over(quickReplyLens, R.compose(R.append(quickReply), R.defaultTo([])), update.message);
 };
 
 // utility to match array of buttons against a text string using fuzzy search
