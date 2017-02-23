@@ -1,28 +1,32 @@
-const R = require('ramda');
-const render = require('posthtml-render');
-const fuzzy = R.curry(require('fuzzysearch'));
+'use strict';
+
+var R = require('ramda');
+var render = require('posthtml-render');
+var fuzzy = R.curry(require('fuzzysearch'));
 
 // turn an object specifying a button into a an xml tree as per posthtml-render
-const buttonObjectToTree = button => ({
-    tag: 'button',
-    content: button.payload,
-    attrs: {
-        image: button.image,
-        title: button.title
-    }
-});
+var buttonObjectToTree = function buttonObjectToTree(button) {
+    return {
+        tag: 'button',
+        content: button.payload,
+        attrs: {
+            image: button.image,
+            title: button.title
+        }
+    };
+};
 // turn a button array into an xml tree as per posthtml-render
-const buttonArrayToTree = R.map(buttonObjectToTree);
+var buttonArrayToTree = R.map(buttonObjectToTree);
 // turn a button array into xml
-const buttonArrayToXml = R.compose(render, buttonArrayToTree);
+var buttonArrayToXml = R.compose(render, buttonArrayToTree);
 
 // where to store the button paylaods in session
-const buttonPayloadLens = R.lensProp('buttonPayloads');
+var buttonPayloadLens = R.lensProp('buttonPayloads');
 // add a button payload to the session
-const updateWithButtonPayload = (update, sessionPath, payload) => {
+var updateWithButtonPayload = function updateWithButtonPayload(update, sessionPath, payload) {
     // append the button payload to button payloads list
     sessionPath = sessionPath.split('.');
-    const thisButtonPayloadLens = R.compose(R.lensPath(sessionPath.splice(1)), buttonPayloadLens);
+    var thisButtonPayloadLens = R.compose(R.lensPath(sessionPath.splice(1)), buttonPayloadLens);
     update[sessionPath[0]] = R.over(thisButtonPayloadLens, R.compose(R.append(payload), R.defaultTo([])), update[sessionPath[0]]);
 };
 
@@ -41,15 +45,19 @@ const updateWithButtonPayload = (update, sessionPath, payload) => {
 };*/
 
 // utility to match array of buttons against a text string using fuzzy search
-const matchingButtons = (text, buttons) => R.filter(R.propSatisfies(title => fuzzy(text.toLowerCase(), title.toLowerCase()), 'title'), buttons);
+var matchingButtons = function matchingButtons(text, buttons) {
+    return R.filter(R.propSatisfies(function (title) {
+        return fuzzy(text.toLowerCase(), title.toLowerCase());
+    }, 'title'), buttons);
+};
 // where to store the basic button context in session
-const buttonLens = R.lensProp('button');
+var buttonLens = R.lensProp('button');
 
 module.exports = {
-    buttonPayloadLens,
-    buttonArrayToXml,
-    buttonLens,
-    updateWithButtonPayload,
+    buttonPayloadLens: buttonPayloadLens,
+    buttonArrayToXml: buttonArrayToXml,
+    buttonLens: buttonLens,
+    updateWithButtonPayload: updateWithButtonPayload,
     //updateWithQuickReply,
-    matchingButtons,
+    matchingButtons: matchingButtons
 };

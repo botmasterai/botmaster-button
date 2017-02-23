@@ -1,6 +1,12 @@
-const R = require('ramda');
-const {buttonLens, buttonArrayToXml} = require('./utils');
-const debug = require('debug')('botmaster:button:handler');
+'use strict';
+
+var R = require('ramda');
+
+var _require = require('./utils'),
+    buttonLens = _require.buttonLens,
+    buttonArrayToXml = _require.buttonArrayToXml;
+
+var debug = require('debug')('botmaster:button:handler');
 
 /**
  *  A botmaster update handler that passes through to main handler if there is no match at all or the match is not an action. If there are multiple possible matches to the button then it asks for confirmation.
@@ -10,20 +16,23 @@ const debug = require('debug')('botmaster:button:handler');
  *  @param {String} options.confirmText the text to use to confirm when there multiple matches
  *  @returns {Function} a botmaster update handler
  */
-const ButtonHandler = (options) => {
-    const {sessionPath = 'session', confirmText = 'I am sorry I got multiple matches, can you please confirm.'} = options;
-    return (bot, update, next) => {
-        const thisButtonLens = R.compose(R.lensPath(sessionPath.split('.')), buttonLens);
-        const buttonResult = R.view(thisButtonLens, update);
+var ButtonHandler = function ButtonHandler(options) {
+    var _options$sessionPath = options.sessionPath,
+        sessionPath = _options$sessionPath === undefined ? 'session' : _options$sessionPath,
+        _options$confirmText = options.confirmText,
+        confirmText = _options$confirmText === undefined ? 'I am sorry I got multiple matches, can you please confirm.' : _options$confirmText;
+
+    return function (bot, update, next) {
+        var thisButtonLens = R.compose(R.lensPath(sessionPath.split('.')), buttonLens);
+        var buttonResult = R.view(thisButtonLens, update);
         if (buttonResult.multiple) {
             debug('asking for confirmation');
-            bot.reply(update,  `${confirmText}${buttonArrayToXml(buttonResult.matches)}`);
+            bot.reply(update, '' + confirmText + buttonArrayToXml(buttonResult.matches));
         } else if (buttonResult) {
             if (buttonResult.isAction) {
                 debug('button contains action - straight to middleware');
                 bot.reply(update, buttonResult.payload);
-            }
-            else {
+            } else {
                 debug('button found - sending payload to main handler');
                 next();
             }
@@ -34,4 +43,4 @@ const ButtonHandler = (options) => {
     };
 };
 
-module.exports = { ButtonHandler };
+module.exports = { ButtonHandler: ButtonHandler };

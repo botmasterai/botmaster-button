@@ -1,6 +1,6 @@
 const R = require('ramda');
 const {isPendingActions, FulfillOutgoingWare} = require('botmaster-fulfill');
-const {updateWithButtonPayload, updateWithQuickReply, buttonArrayToXml } = require('./utils');
+const {updateWithButtonPayload, buttonArrayToXml } = require('./utils');
 
 /**
  * Action spec for buttons
@@ -49,22 +49,20 @@ const ButtonAction = options => ({
         }
 
         // use either the messenger format or a text format
-        let newUpdate = R.clone(update);
         if (bot.implements.quickReply) {
-            updateWithQuickReply(newUpdate, {
+            bot.sendDefaultButtonMessageTo({
                 title,
                 payload: content,
                 image: attributes.image
-            });
+            },
+                update.sender.id
+            );
         } else {
             if (index === 0) {
-                const beforeUpdate = R.clone(update);
-                beforeUpdate.message.text = before;
-                bot.sendMessage(beforeUpdate);
+                bot.reply(update, before);
             }
-            newUpdate.message.text = title;
+            bot.reply(update, title);
         }
-        bot.sendMessage(newUpdate);
 
         // remove the tag from the remaining text
         return '';
