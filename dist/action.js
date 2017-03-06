@@ -76,12 +76,12 @@ var ButtonAction = function ButtonAction(options) {
                     title: title,
                     payload: content,
                     image: attributes.image
-                }, update.sender.id);
+                }, update.sender.id).catch(console.log);
             } else {
                 if (index === 0) {
-                    bot.reply(update, before);
+                    bot.reply(update, before).catch(console.log);
                 }
-                bot.reply(update, title);
+                bot.reply(update, title).catch(console.log);
             }
 
             // remove the tag from the remaining text

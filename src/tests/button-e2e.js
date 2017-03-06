@@ -53,6 +53,7 @@ describe('botmaster-button', () => {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
+
         myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
         myTelegramMock
             .expect([
@@ -92,13 +93,13 @@ describe('botmaster-button', () => {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
-        myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error}`)));
         myTelegramMock
             .expect([
                 'Hello.',
                 '1. I am in a relationship',
                 '2. I am not in a relationship',
-                '3. Its Complicated'
+                '3. Its Complicated',
+
             ], (err) => {
                 if (err) done(new Error('supertest error: ' + err));
                 myTelegramMock

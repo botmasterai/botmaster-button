@@ -48,6 +48,7 @@ const ButtonAction = options => ({
             updateWithButtonPayload(update, options.sessionPath, storePayload);
         }
 
+
         // use either the messenger format or a text format
         if (bot.implements.quickReply) {
             bot.sendDefaultButtonMessageTo({
@@ -56,12 +57,15 @@ const ButtonAction = options => ({
                 image: attributes.image
             },
                 update.sender.id
-            );
+            )
+                .catch(console.log);
         } else {
             if (index === 0) {
-                bot.reply(update, before);
+                bot.reply(update, before)
+                    .catch(console.log);
             }
-            bot.reply(update, title);
+            bot.reply(update, title)
+                .catch(console.log);
         }
 
         // remove the tag from the remaining text

@@ -52,6 +52,7 @@ describe('botmaster-button', function () {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
+
         myBotmaster.on('error', function (bot, error) {
             return done(new Error('botmaster error: ' + error));
         });
@@ -79,9 +80,6 @@ describe('botmaster-button', function () {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
-        myBotmaster.on('error', function (bot, error) {
-            return done(new Error('botmaster error: ' + error));
-        });
         myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
             if (err) done(new Error('supertest error: ' + err));
             myTelegramMock.expect(['1. It\'s complicated because we want it to be that way.', '2. It\'s complicated because life is complicated.', '3. Mind your own business.'], done).sendUpdate('3.', function (err) {

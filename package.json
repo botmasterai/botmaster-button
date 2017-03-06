@@ -34,18 +34,18 @@
     "ramda": "^0.23.0"
   },
   "peerDependencies": {
-    "botmaster": ">=2.2.7",
-    "botmaster-fulfill": ">=2.1.3",
+    "botmaster": ">=2.3.0",
+    "botmaster-fulfill": ">=3.2.0",
     "botmaster-enrich": ">=1.0.0"
   },
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-preset-es2015": "^6.22.0",
     "documentation": "^4.0.0-beta.18",
-    "botmaster": "git+https://github.com/botmasterai/botmaster.git#patch-outgoingware",
+    "botmaster": "2.3.1",
     "botmaster-enrich": "1.0.1",
-    "botmaster-fulfill": "git+https://github.com/botmasterai/botmaster-fulfill.git",
-    "botmaster-session-ware": "0.1.0",
+    "botmaster-fulfill": "3.2.0",
+    "botmaster-session-ware": "0.1.3",
     "botmaster-test": "0.0.4",
     "coveralls": "^2.11.15",
     "istanbul": "^0.4.5",
