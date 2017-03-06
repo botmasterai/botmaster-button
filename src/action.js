@@ -57,15 +57,12 @@ const ButtonAction = options => ({
                 image: attributes.image
             },
                 update.sender.id
-            )
-                .catch(console.log);
+            );
         } else {
             if (index === 0) {
-                bot.reply(update, before)
-                    .catch(console.log);
+                bot.reply(update, before);
             }
-            bot.reply(update, title)
-                .catch(console.log);
+            bot.reply(update, title);
         }
 
         // remove the tag from the remaining text
