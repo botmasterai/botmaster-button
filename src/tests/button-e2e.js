@@ -123,7 +123,7 @@ describe('botmaster-button', () => {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
-        myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error.stack}`)));
+        //myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error.stack}`)));
         myTelegramMock
             .expect([
                 'Hello.',

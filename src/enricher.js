@@ -19,9 +19,10 @@ const ButtonEnricher = () => ({
             } else if (matches.length > 1) {
                 debug(`multiple button matches ${matches.map(R.prop('title')).join(', ')}`);
                 updatedContext = R.set(buttonLens, {multiple: true, matches}, updatedContext);
+            } else {
+                debug('no button matched');
+                updatedContext = R.set(buttonPayloadLens, [], updatedContext);
             }
-            debug('no button matched');
-            updatedContext = R.set(buttonPayloadLens, [], updatedContext);
         } else {
             debug('no buttons to match');
             updatedContext = R.set(buttonLens, false, updatedContext);

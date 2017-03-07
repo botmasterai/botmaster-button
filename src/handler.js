@@ -17,11 +17,17 @@ const ButtonHandler = (options) => {
         const buttonResult = R.view(thisButtonLens, update);
         if (buttonResult.multiple) {
             debug('asking for confirmation');
-            bot.reply(update,  `${confirmText}${buttonArrayToXml(buttonResult.matches)}`);
+            bot.reply(update,  `${confirmText}${buttonArrayToXml(buttonResult.matches)}`)
+                .catch(err =>
+                    next(err)
+                );
         } else if (buttonResult) {
             if (buttonResult.isAction) {
                 debug('button contains action - straight to middleware');
-                bot.reply(update, buttonResult.payload);
+                bot.reply(update, buttonResult.payload)
+                    .catch(err =>
+                        next(err)
+                    );
             }
             else {
                 debug('button found - sending payload to main handler');
