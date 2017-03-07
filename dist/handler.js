@@ -38,7 +38,7 @@ var ButtonHandler = function ButtonHandler(options) {
                 });
             } else {
                 debug('button found - sending payload to main handler');
-                update.mesage.text = buttonResult.payload;
+                update.message.text = buttonResult.payload;
                 next();
             }
         } else {

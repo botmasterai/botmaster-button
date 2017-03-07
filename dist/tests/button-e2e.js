@@ -10,6 +10,7 @@ var _require2 = require('botmaster-test'),
     telegramMock = _require2.telegramMock;
 
 var SessionWare = require('botmaster-session-ware');
+require('should');
 
 describe('botmaster-button', function () {
     var myBotmaster = void 0;
@@ -43,6 +44,11 @@ describe('botmaster-button', function () {
         return botmaster().then(function (botmaster) {
             myTelegramMock = telegramMock(botmaster);
             myBotmaster = botmaster;
+            myBotmaster.on('error', function (bot, error) {
+                if (error.message.indexOf('No response after fulfill or response is not a string') == -1 && error.message.indexOf('Response is empty after trimming') == -1) {
+                    console.log(error);
+                }
+            });
             sessionWare = SessionWare();
         });
     });
@@ -74,7 +80,7 @@ describe('botmaster-button', function () {
         });
     });
 
-    it('it should match text buttons', function (done) {
+    it('it should match text buttons and use the action to fulfill it', function (done) {
 
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);
@@ -90,7 +96,89 @@ describe('botmaster-button', function () {
         });
     });
 
-    it('it ask for confirmation when there are multiple options', function (done) {
+    it('it should match text buttons and send the payload to the main handler', function (done) {
+
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', function (bot, update, next) {
+            if (update.message.text == 'hi bob') {
+                next();
+            } else {
+                update.message.text.should.equal('I am not in a relationship');
+                done();
+            }
+        });
+        myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+            myTelegramMock.sendUpdate('2.', function (err) {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+        }).sendUpdate('hi bob', function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+        });
+    });
+
+    it('it should not match two messages down', function (done) {
+
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', function (bot, update, next) {
+            if (update.message.text == 'I am not in a relationship') {
+                bot.reply(update, 'Too bad for you!');
+            } else if (update.message.text == '1') {
+                done();
+            } else {
+                next();
+            }
+        });
+        myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+            myTelegramMock.expect(['Too bad for you!'], function (err) {
+                if (err) return done(new Error('supertest error: ' + err));
+                myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function () {}).sendUpdate('1', done);
+            }).sendUpdate('2', function (err) {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+        }).sendUpdate('hi bob', function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+        });
+    });
+
+    it('it should not match three messages down', function (done) {
+
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', function (bot, update, next) {
+            if (update.message.text == 'hi bob' || update.message.text == 'I am not in a relationship') {
+                next();
+            } else if (update.message.text == 'boo') {
+                done();
+            } else {
+                done('did not get \'boo\', got ' + update.message.text);
+            }
+        });
+        myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+            myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
+                if (err) return done(new Error('supertest error: ' + err));
+                myTelegramMock.expect([], function () {
+                    return done('did not expect to get a response');
+                }).sendUpdate('boo', function () {});
+            }).sendUpdate('2', function (err) {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+        }).sendUpdate('hi bob', function (err) {
+            if (err) done(new Error('supertest error: ' + err));
+        });
+    });
+
+    it('should ask for confirmation when there are multiple options', function (done) {
 
         myBotmaster.use('incoming', sessionWare.incoming);
         bootstrap(myBotmaster, buttonWareOptions);

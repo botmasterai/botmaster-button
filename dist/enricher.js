@@ -24,6 +24,7 @@ var ButtonEnricher = function ButtonEnricher() {
 
             var buttons = R.view(buttonPayloadLens, context);
             var updatedContext = {};
+            updatedContext = R.set(buttonLens, false, updatedContext);
             if (buttons && buttons.length > 0) {
                 var matches = matchingButtons(update.message.text, buttons);
                 if (matches.length == 1) {
@@ -38,7 +39,6 @@ var ButtonEnricher = function ButtonEnricher() {
                 }
             } else {
                 debug('no buttons to match');
-                updatedContext = R.set(buttonLens, false, updatedContext);
             }
             return updatedContext;
         }

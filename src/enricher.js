@@ -11,6 +11,7 @@ const ButtonEnricher = () => ({
     controller: ({update, context}) => {
         const buttons = R.view(buttonPayloadLens, context);
         let updatedContext = {};
+        updatedContext = R.set(buttonLens, false, updatedContext);
         if (buttons && buttons.length > 0) {
             const matches = matchingButtons(update.message.text, buttons);
             if (matches.length == 1) {
@@ -25,7 +26,6 @@ const ButtonEnricher = () => ({
             }
         } else {
             debug('no buttons to match');
-            updatedContext = R.set(buttonLens, false, updatedContext);
         }
         return updatedContext;
     }
