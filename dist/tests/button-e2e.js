@@ -96,9 +96,7 @@ describe('botmaster-button', function () {
         bootstrap(myBotmaster, buttonWareOptions);
         myBotmaster.use('incoming', mainHandler);
         myBotmaster.use('outgoing', sessionWare.outgoing);
-        myBotmaster.on('error', function (bot, error) {
-            return done(new Error('botmaster error: ' + error.stack));
-        });
+        //myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error.stack}`)));
         myTelegramMock.expect(['Hello.', '1. I am in a relationship', '2. I am not in a relationship', '3. Its Complicated'], function (err) {
             if (err) done(new Error('supertest error: ' + err));
             myTelegramMock.expect([buttonWareOptions.confirmText, '1. I am in a relationship', '2. I am not in a relationship'], done).sendUpdate('I am', function (err) {
