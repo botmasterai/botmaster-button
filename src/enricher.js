@@ -22,11 +22,11 @@ const ButtonEnricher = () => ({
                 updatedContext = R.set(buttonLens, {multiple: true, matches}, updatedContext);
             } else {
                 debug('no button matched');
-                updatedContext = R.set(buttonPayloadLens, [], updatedContext);
             }
         } else {
             debug('no buttons to match');
         }
+        updatedContext = R.set(buttonPayloadLens, [], updatedContext);
         return updatedContext;
     }
 });

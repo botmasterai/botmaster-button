@@ -26,8 +26,7 @@ const buttons = {
  */
 const ButtonAction = options => ({
     series: true,
-    replace: 'before',
-    controller: ({bot, update, attributes, content, index, before}) => {
+    controller: ({bot, update, attributes, content, index, before}, next) => {
         // the title is what is shown in the button
         let title;
         if (bot.implements.quickReply) {
@@ -49,24 +48,32 @@ const ButtonAction = options => ({
         }
 
 
-        // use either the messenger format or a text format
-        if (bot.implements.quickReply) {
-            bot.sendDefaultButtonMessageTo({
-                title,
-                payload: content,
-                image: attributes.image
-            },
-                update.sender.id
-            );
-        } else {
-            if (index === 0) {
-                bot.reply(update, before);
-            }
-            bot.reply(update, title);
-        }
-
         // remove the tag from the remaining text
-        return '';
+        next(null, '').then( () => {
+            let promise;
+            // use either the messenger format or a text format
+            if (bot.implements.quickReply) {
+                promise = bot.sendDefaultButtonMessageTo({
+                    title,
+                    payload: content,
+                    image: attributes.image
+                },
+                    update.sender.id
+                );
+            } else {
+                promise = bot.reply(update, title);
+            }
+
+            promise.catch( err => {
+                if (err.message &&
+                    err.message.indexOf('No response after fulfill or response is not a string') == -1 &&
+                    err.message.indexOf('Response is empty after trimming') > -1
+                ) {
+                    console.log('non fatal error in button action');
+                    console.log(err);
+                }
+            });
+        });
     }
 });
 

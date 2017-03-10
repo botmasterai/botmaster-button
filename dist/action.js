@@ -41,8 +41,7 @@ var buttons = {
 var ButtonAction = function ButtonAction(options) {
     return {
         series: true,
-        replace: 'before',
-        controller: function controller(_ref2) {
+        controller: function controller(_ref2, next) {
             var bot = _ref2.bot,
                 update = _ref2.update,
                 attributes = _ref2.attributes,
@@ -70,22 +69,27 @@ var ButtonAction = function ButtonAction(options) {
                 updateWithButtonPayload(update, options.sessionPath, storePayload);
             }
 
-            // use either the messenger format or a text format
-            if (bot.implements.quickReply) {
-                bot.sendDefaultButtonMessageTo({
-                    title: title,
-                    payload: content,
-                    image: attributes.image
-                }, update.sender.id);
-            } else {
-                if (index === 0) {
-                    bot.reply(update, before);
-                }
-                bot.reply(update, title);
-            }
-
             // remove the tag from the remaining text
-            return '';
+            next(null, '').then(function () {
+                var promise = void 0;
+                // use either the messenger format or a text format
+                if (bot.implements.quickReply) {
+                    promise = bot.sendDefaultButtonMessageTo({
+                        title: title,
+                        payload: content,
+                        image: attributes.image
+                    }, update.sender.id);
+                } else {
+                    promise = bot.reply(update, title);
+                }
+
+                promise.catch(function (err) {
+                    if (err.message && err.message.indexOf('No response after fulfill or response is not a string') == -1 && err.message.indexOf('Response is empty after trimming') > -1) {
+                        console.log('non fatal error in button action');
+                        console.log(err);
+                    }
+                });
+            });
         }
     };
 };

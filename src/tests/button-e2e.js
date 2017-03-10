@@ -167,8 +167,6 @@ describe('botmaster-button', () => {
         myBotmaster.use('incoming', (bot, update, next) => {
             if (update.message.text == 'I am not in a relationship') {
                 bot.reply(update, 'Too bad for you!');
-            } else if (update.message.text == '1') {
-                done();
             } else {
                 next();
             }
@@ -248,6 +246,55 @@ describe('botmaster-button', () => {
 
     });
 
+    it('it should not match four messages down', function(done) {
+
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', (bot, update, next) => {
+            if (update.message.text == 'hi bob' || update.message.text == 'I am not in a relationship') {
+                next();
+            } else if (update.message.text == 'boo') {
+                done();
+            } else {
+                done(`did not get 'boo', got ${update.message.text}`);
+            }
+        });
+        myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        myTelegramMock
+            .expect([
+                'Hello.',
+                '1. I am in a relationship',
+                '2. I am not in a relationship',
+                '3. Its Complicated'
+            ], (err) => {
+                if (err) done(new Error('supertest error: ' + err));
+                myTelegramMock
+                    .expect([
+                        'Hello.',
+                        '1. I am in a relationship',
+                        '2. I am not in a relationship',
+                        '3. Its Complicated'
+                    ], err => {
+                        if (err) return done(new Error('supertest error: ' + err));
+                        myTelegramMock
+                            .expect([
+                                'Hello.',
+                                '1. I am in a relationship',
+                                '2. I am not in a relationship',
+                                '3. Its Complicated'
+                            ], (err) => done(err))
+                            .sendUpdate('2', () => {});
+                    }).sendUpdate('2', err => {
+                        if (err) done(new Error('supertest error: ' + err));
+                    });
+            })
+            .sendUpdate('hi bob', err => {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+
+    });
+
     it('should ask for confirmation when there are multiple options', function(done) {
 
         myBotmaster.use('incoming', sessionWare.incoming);
@@ -269,6 +316,52 @@ describe('botmaster-button', () => {
                         '1. I am in a relationship',
                         '2. I am not in a relationship',
                     ], done).sendUpdate('I am', err => {
+                        if (err) done(new Error('supertest error: ' + err));
+                    });
+            })
+            .sendUpdate('hi bob', err => {
+                if (err) done(new Error('supertest error: ' + err));
+            });
+
+    });
+
+    it('should let the user confirm after selecting multiple options', function(done) {
+
+        myBotmaster.use('incoming', sessionWare.incoming);
+        bootstrap(myBotmaster, buttonWareOptions);
+        myBotmaster.use('incoming', (bot, update, next) => {
+            if (update.message.text == 'I am not in a relationship') {
+                done();
+            } else {
+                next();
+            }
+        });
+        myBotmaster.use('incoming', mainHandler);
+        myBotmaster.use('outgoing', sessionWare.outgoing);
+        //myBotmaster.on('error', (bot, error) => done(new Error(`botmaster error: ${error.stack}`)));
+        myTelegramMock
+            .expect([
+                'Hello.',
+                '1. I am in a relationship',
+                '2. I am not in a relationship',
+                '3. Its Complicated'
+            ], (err) => {
+                if (err) done(new Error('supertest error: ' + err));
+                myTelegramMock
+                    .expect([
+                        buttonWareOptions.confirmText,
+                        '1. I am in a relationship',
+                        '2. I am not in a relationship',
+                    ], (err) => {
+                        if (err) done(new Error('supertest error: ' + err));
+                        myTelegramMock
+                            .expect([
+
+                            ]).sendUpdate('2', err => {
+                                if (err) done(new Error('supertest error: ' + err));
+                            });
+
+                    }).sendUpdate('I am', err => {
                         if (err) done(new Error('supertest error: ' + err));
                     });
             })
